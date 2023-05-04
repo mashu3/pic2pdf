@@ -100,10 +100,9 @@ class HelpFormatter(argparse.HelpFormatter):
     def _split_lines(self, text, _):
         return text.splitlines()
 
-def convert(image_files, output_path):
+def convert(image_files):
     pic2pdf = PdfConverter()
-    with open(output_path, "wb") as f:
-        f.write(pic2pdf.to_pdf_bytes(image_files))
+    return pic2pdf.to_pdf_bytes(image_files)
 
 def main():
     parser = argparse.ArgumentParser(description='This program converts an entire directory of images into a single PDF file.')
@@ -142,7 +141,8 @@ def main():
         output_path = args.output_path
 
     try:
-        convert(image_files, output_path)
+        with open(output_path, 'wb') as f:
+            f.write(convert(image_files))
     except ValueError as e:
         print(f"Error: {e}")
         sys.exit(1)
